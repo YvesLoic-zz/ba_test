@@ -116,11 +116,11 @@ class ProductController extends Controller
     {
         $user = $request->user();
         if ($this->isAdmin($user) || $this->isOwner($user)) {
-            $product = Product::find($id);
+            $product = Product::find($id)->first();
             if (empty($product)) {
-                $product = Product::withTrashed()->find($id);
+                $product = Product::withTrashed()->find($id)->first();
             }
-            $autor = User::find($id);
+            $autor = User::find($product->user_id);
             return view('pages.products.details', compact('product', 'autor'));
         }
         abort(403, "Access denied!");

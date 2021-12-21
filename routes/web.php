@@ -22,10 +22,10 @@ Route::get(
     '/',
     [GuestController::class, 'index']
 );
-Route::get(
-    '/{id}',
-    [GuestController::class, 'show']
-)->name('detail');
+// Route::get(
+//     '/{id}',
+//     [GuestController::class, 'show']
+// )->name('detail');
 
 Auth::routes();
 
