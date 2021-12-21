@@ -167,7 +167,7 @@ class ProductController extends Controller
             $form->redirectIfNotValid();
             $product = $this->_fillProductData($request, $product);
             if (!empty($request->file('image'))) {
-                $this->uploadUserPicture($request, $product);
+                $this->uploadProductImage($request, $product);
             }
             $product->updated_at = Date::now();
             $product->update();
