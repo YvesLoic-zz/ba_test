@@ -1,5 +1,5 @@
 # ba_test
- Projet de test pour
+ Projet de test pour Bridge Africa
 # Procédure de test
  - installer les dépendances
 ~~~~
@@ -7,7 +7,7 @@
 ~~~~
  - créer la bd mysql
 ~~~~
-    php artisan creat:db
+    php artisan create:db
 ~~~~
  - créer les tables en bd
 ~~~~

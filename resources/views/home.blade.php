@@ -35,11 +35,11 @@
                     @else
                         @if (Auth::user()->rule == 'admin')
                             <li class="nav-item">
-                                <a href="{{route('user_index')}}" class="nav-link">Utilisateurs</a>
+                                <a href="{{ route('user_index') }}" class="nav-link">Utilisateurs</a>
                             </li>
                         @endif
                         <li class="nav-item">
-                            <a href="{{route('product_index')}}" class="nav-link">Produits</a>
+                            <a href="{{ route('product_index') }}" class="nav-link">Produits</a>
                         </li>
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
@@ -50,7 +50,7 @@
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                     onclick="event.preventDefault();
-                                                                                     document.getElementById('logout-form').submit();">
+                                                                                             document.getElementById('logout-form').submit();">
                                     {{ __('Logout') }}
                                 </a>
 
@@ -67,8 +67,8 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-12">
-            @yield('center')
-                {{-- <div class="card">
+            @section('center')
+                <div class="card">
                     <div class="card-header">{{ __('Dashboard') }}</div>
 
                     <div class="card-body">
@@ -78,10 +78,10 @@
                             </div>
                         @endif
 
-                        {{ __('You are logged in!') }}
+                        {{ __('You are logged in!') }} {{ Auth::user()->name }}
                     </div>
-                </div> --}}
-            {{-- @endsection --}}
+                </div>
+            @show
         </div>
     </div>
 </div>
