@@ -39,6 +39,10 @@ class ProductForm extends Form
                     'attr' => [
                         'class' => 'form-control',
                         'placeholder' => 'Quantité'
+                    ],
+                    'rules'=>[
+                        'required',
+                        'numeric',
                     ]
                 ]
             )
@@ -50,6 +54,10 @@ class ProductForm extends Form
                     'attr' => [
                         'class' => 'form-control',
                         'placeholder' => 'Prix produit'
+                    ],
+                    'rules'=>[
+                        'required',
+                        'numeric',
                     ]
                 ]
             )
