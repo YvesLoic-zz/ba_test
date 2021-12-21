@@ -8,8 +8,12 @@
 
 @section('center')
     <div class="card">
-        <div class="card-header">Utilisateurs</div>
-
+        <div class="card-header">
+            Utilisateurs
+            <a href="{{route('user_create')}}" class="btn btn-info float-end">
+                Nouveau
+            </a>
+        </div>
         <div class="card-body">
             <table class="table datatables" id="users"></table>
         </div>
@@ -20,9 +24,6 @@
     <script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('assets/js/dataTables.bootstrap5.min.js') }}"></script>
     <script>
-        // $(function () {
-        //     alert('ok');
-        // })(jQuery);
         $(document).ready(function() {
             $('#users').DataTable({
                 "processing": true,

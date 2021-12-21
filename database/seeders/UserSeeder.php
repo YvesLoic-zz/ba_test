@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
             ->each(
                 function ($user) {
                     // set user's rules
-                    $user->rules()->attach([1, 2, 3]);
+                    $user->rules()->attach([1, 2]);
                 }
             );
     }

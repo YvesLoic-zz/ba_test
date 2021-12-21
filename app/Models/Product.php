@@ -17,18 +17,21 @@ class Product extends Model
      */
     protected $fillable = [
         'user_id',
-        'title',
+        'name',
         'description',
+        'price',
+        'quantity',
+        'image',
         'published',
     ];
 
     /**
-     * Get all images associated to this product.
+     * Cette méthode est utilisée pour avoir l'auteur d'un produit.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function images()
+    public function creator()
     {
-        return $this->hasMany(ProductImages::class);
+        return $this->belongsTo(User::class);
     }
 }

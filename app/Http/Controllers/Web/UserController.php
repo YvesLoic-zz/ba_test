@@ -27,8 +27,11 @@ class UserController extends Controller
     {
         $this->_formbuilder = $formBuilder;
     }
+
     /**
      * Display a listing of the resource.
+     *
+     * @param \Illuminate\Http\Request $request requette
      *
      * @return \Illuminate\Http\Response
      */
@@ -58,6 +61,8 @@ class UserController extends Controller
     /**
      * Show the form for creating a new resource.
      *
+     * @param \Illuminate\Http\Request $request requette
+     *
      * @return \Illuminate\Http\Response
      */
     public function create(Request $request)
@@ -73,7 +78,8 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request requette
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -100,14 +106,20 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\User  $user
+     * @param \Illuminate\Http\Request $request requette
+     * @param \App\Models\User         $user    utilisateur à afficher
+     * @param int                      $id      identifiant
      *
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, User $user)
+    public function show(Request $request, User $user, int $id)
     {
         $a = $request->user();
         if ($this->isAdmin($a)) {
+            $user = User::find($id);
+            if (empty($user)) {
+                $user = User::withTrashed()->find($id);
+            }
             return view('pages.users.details', compact('user'));
         }
         abort(403, "Access denied!");
@@ -116,16 +128,22 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\User  $user
+     * @param \Illuminate\Http\Request $request requette
+     * @param \App\Models\User         $user    utilisateur
+     * @param int                      $id      identifiant
      *
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request, User $user)
+    public function edit(Request $request, User $user, int $id)
     {
         $a = $request->user();
         if ($this->isAdmin($a)) {
+            $user = User::find($id);
+            if (empty($user)) {
+                $user = User::withTrashed()->find($id);
+            }
             $form = $this->_getForm($user);
-            return view('pages.users.create', compact('form'));
+            return view('pages.users.create', compact('form', 'user'));
         }
         abort(403, "Access denied!");
     }
@@ -133,19 +151,22 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\User  $user
+     * @param \Illuminate\Http\Request $request requette
+     * @param \App\Models\User         $user    utilisateur à mettre à jour
+     * @param int                      $id      identifiant
+     *
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, User $user, int $id)
     {
         $a = $request->user();
         if ($this->isAdmin($a)) {
+            $user = User::find($id);
             $form = $this->_getForm($user);
             $form->redirectIfNotValid();
             $user = $this->_fillUserData($request, $user);
             $user->update();
-            $user->roles()->detach();
+            $user->rules()->detach();
             $this->_fillUserRoles($user);
             return redirect()->route('user_index')
                 ->with(
@@ -162,14 +183,16 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\User  $user
-     * 
+     * @param \Illuminate\Http\Request $request requette
+     * @param \App\Models\User         $user    utilisateur à supprimer
+     *
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, User $user)
+    public function destroy(Request $request, User $user, int $id)
     {
         $a = $request->user();
         if ($this->isAdmin($a)) {
+            $user = User::find($id);
             $user->delete();
             return redirect()->route('user_index')
                 ->with(
@@ -212,7 +235,7 @@ class UserController extends Controller
     private function _fillUserData(Request $req, ?User $user = null)
     {
         $u = $user ?: new User();
-        $u->matricule = $req->name;
+        $u->name = $req->name;
         $u->email = $req->email;
         $u->rule = $req->rule;
         if (!empty($req->password)) {
@@ -231,11 +254,9 @@ class UserController extends Controller
     private function _fillUserRoles(User $user)
     {
         if ($user->rule == 'admin') {
-            $user->rules()->attach([1, 2, 3]);
-        } else if ($user->rule == 'owner') {
-            $user->rules()->attach([2, 3]);
+            $user->rules()->attach([1, 2]);
         } else {
-            $user->rules()->attach(3);
+            $user->rules()->attach(2);
         }
     }
 }

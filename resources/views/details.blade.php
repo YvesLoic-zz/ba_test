@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>{{ config('app.name', 'BA-TEST guest') }}</title>
+    <title>{{ config('app.name', 'BA-TEST guest detail') }}</title>
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
@@ -424,24 +424,45 @@
                 <div class="container">
                     <div class="row justify-content-center">
                         <div class="col-md-12">
-                            <div class="row col-md-4">
-                                @if (count($products) > 0)
-                                    @foreach ($products as $product)
-                                        <div class="card" style="width: 18rem;">
-                                            <img class="card-img-top" src="{{ asset($product->image) }}"
-                                                style="width: 200px; height: 150px" alt="{{ $product->name }}">
-                                            <div class="card-body">
-                                                <h5 class="card-title">{{ $product->name }}</h5>
-                                                <p class="card-text">{{ $product->description }}</p>
-                                                {{-- <p class="card-text">Crée par: {{ $product->creator->name }}</p> --}}
-                                                <a href="{{ route('detail', ['id' => $product->id]) }}"
-                                                    class="btn btn-primary">Détails</a>
-                                            </div>
+                            <div class="card">
+                                <div class="card-header">
+                                    Informations d'un produit
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-6 label">Nom</div>
+                                        <div class="col-lg-6 col-md-6">{{ $product->name }}</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-6 label">Créer le</div>
+                                        <div class="col-lg-6 col-md-6">
+                                            {{ $product->created_at->format('j F, Y H:m') }} par: {{ $autor->name }}
                                         </div>
-                                    @endforeach
-                                @else
-                                    <h5 align="center"> No data found...</h5>
-                                @endif
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-6 label">Prix</div>
+                                        <div class="col-lg-6 col-md-6">{{ $product->price }}</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-6 label">Quantité</div>
+                                        <div class="col-lg-6 col-md-6">{{ $product->quantity }}</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-6 label">Description</div>
+                                        <div class="col-lg-6 col-md-6">{{ $product->description }}</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-6 label">Image</div>
+                                        <div class="col-lg-6 col-md-6">
+                                            @if (!empty($product->image))
+                                                <img src="{{ asset($product->image) }}" alt="Image"
+                                                    style="width: 200px; height: 200px">
+                                            @else
+                                                <span>Pas d'image pour ce produit</span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -33,19 +33,4 @@ trait Library
         }
         return false;
     }
-
-    /**
-     * Check if the user has user rule
-     *
-     * @param \App\Models\User $user user connecté
-     *
-     * @return bool
-     */
-    protected function isUser($user)
-    {
-        if (!empty($user) && strcmp($user->rule, "user") == 0) {
-            return true;
-        }
-        return false;
-    }
 }

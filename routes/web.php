@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\GuestController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Web\ProductController;
 use App\Http\Controllers\Web\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -18,18 +20,30 @@ use Illuminate\Support\Facades\Route;
 
 Route::get(
     '/',
-    function () {
-        return view('welcome');
-    }
+    [GuestController::class, 'index']
 );
+Route::get(
+    '/{id}',
+    [GuestController::class, 'show']
+)->name('detail');
 
 Auth::routes();
 
-Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Route::middleware(['auth', 'userIs:owner'])->group(
     function () {
 
+        /**
+         * Accueil du dashboard
+         */
+        Route::get(
+            '/home',
+            [HomeController::class, 'index']
+        )->name('home');
+
+        /**
+         * Routes pour le module des users
+         */
         Route::prefix('users')->group(
             function () {
                 route::get(
@@ -48,7 +62,7 @@ Route::middleware(['auth', 'userIs:owner'])->group(
                     'store',
                     [UserController::class, 'store']
                 )->name('user_store');
-                route::post(
+                route::get(
                     '/{id}/edit',
                     [UserController::class, 'edit']
                 )->name('user_edit');
@@ -60,6 +74,42 @@ Route::middleware(['auth', 'userIs:owner'])->group(
                     '/{id}/delete',
                     [UserController::class, 'destroy']
                 )->name('user_delete');
+            }
+        );
+
+        /**
+         * Routes pour le module des produits
+         */
+        Route::prefix('products')->group(
+            function () {
+                route::get(
+                    'index',
+                    [ProductController::class, 'index']
+                )->name('product_index');
+                route::get(
+                    'create',
+                    [ProductController::class, 'create']
+                )->name('product_create');
+                route::get(
+                    '/{id}/show',
+                    [ProductController::class, 'show']
+                )->name('product_show');
+                route::post(
+                    'store',
+                    [ProductController::class, 'store']
+                )->name('product_store');
+                route::get(
+                    '/{id}/edit',
+                    [ProductController::class, 'edit']
+                )->name('product_edit');
+                route::put(
+                    '/{id}/update',
+                    [ProductController::class, 'update']
+                )->name('product_update');
+                route::get(
+                    '/{id}/delete',
+                    [ProductController::class, 'destroy']
+                )->name('product_delete');
             }
         );
     }

@@ -19,8 +19,11 @@ class CreateProductsTable extends Migration
             function (Blueprint $table) {
                 $table->id();
                 $table->foreignIdFor(User::class);
-                $table->string('title')->nullable();
+                $table->string('name')->nullable();
                 $table->longText('description')->nullable();
+                $table->integer('quantity')->unsigned()->default(0);
+                $table->double('price')->default(0.0);
+                $table->string('image')->nullable();
                 $table->boolean('published')->default(false);
                 $table->softDeletes();
                 $table->timestamps();

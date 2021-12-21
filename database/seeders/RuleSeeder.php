@@ -17,7 +17,6 @@ class RuleSeeder extends Seeder
         $rules = [
             ['name' => 'admin'],
             ['name' => 'owner'],
-            ['name' => 'user'],
         ];
         Rule::factory(1)->createMany($rules);
     }
