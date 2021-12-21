@@ -7,7 +7,7 @@
         <div class="card-header">
             Informations d'un produit
             @if (!empty($product) && !empty($product->deleted_at))
-                <span class="badge bg-warning float-end">
+                <span class="badge bg-danger float-end">
                     Produit Supprimé
                 </span>
             @endif

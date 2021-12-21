@@ -7,9 +7,16 @@
         <div class="card-header">
             Informations d'un roduit
             @if (!empty($product) && !empty($product->deleted_at))
-                <span class="badge bg-warning float-end">
+                <span class="badge bg-danger float-end">
                     Produit Supprimé
                 </span>
+                @if (Auth::user()->rule == 'admin')
+                    <span>
+                        <a href="{{ route('product_restore', ['id' => $product->id]) }}" class="btn btn-info">
+                            Restorer
+                        </a>
+                    </span>
+                @endif
             @endif
         </div>
         <div class="card-body">
@@ -25,12 +32,12 @@
                     </div>
                 </div>
             @elseif (Auth::user()->rule == 'owner' && Auth::user()->id == $product->user_id)
-            <div class="row">
-                <div class="col-lg-6 col-md-6 label">Crée par moi le</div>
-                <div class="col-lg-6 col-md-6">
-                    {{ $product->created_at->format('j F, Y H:m') }} .
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 label">Crée par moi le</div>
+                    <div class="col-lg-6 col-md-6">
+                        {{ $product->created_at->format('j F, Y H:m') }} .
+                    </div>
                 </div>
-            </div>
             @endif
             <div class="row">
                 <div class="col-lg-6 col-md-6 label">Prix</div>
@@ -65,18 +72,21 @@
                     @endif
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-6 col-md-6 label">Supprimer ce produit</div>
-                <div class="col-lg-6 col-md-6">
-                    <form action="{{ route('product_delete', ['id' => $product->id]) }}" method="delete">
-                        @csrf
-                        <button class="btn btn-default float-end" type="submit">
-                            <i class="bi bi-trash-fill" style="color: red;"></i>
-                            <span style="color: red;">Supprimer</span>
-                        </button>
-                    </form>
+            @if (empty($product->deleted_at))
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 label">Supprimer ce produit</div>
+                    <div class="col-lg-6 col-md-6">
+                        <form action="{{ route('product_delete', ['id' => $product->id]) }}" method="delete">
+                            @csrf
+                            <button class="btn btn-default float-end" type="submit">
+                                <i class="bi bi-trash-fill" style="color: red;"></i>
+                                <span style="color: red;">Supprimer</span>
+                            </button>
+                        </form>
+                    </div>
                 </div>
-            </div>
+            @endif
+
         </div>
     </div>
 @endsection

@@ -116,9 +116,9 @@ class ProductController extends Controller
     {
         $user = $request->user();
         if ($this->isAdmin($user) || $this->isOwner($user)) {
-            $product = Product::find($id)->first();
+            $product = Product::find($id);
             if (empty($product)) {
-                $product = Product::withTrashed()->find($id)->first();
+                $product = Product::withTrashed()->find($id);
             }
             $autor = User::find($product->user_id);
             return view('pages.products.details', compact('product', 'autor'));
@@ -192,6 +192,24 @@ class ProductController extends Controller
             $product = Product::find($id);
             $product->published = false;
             $product->delete();
+            return redirect()->route('product_index');
+        }
+        abort(403, "Access denied!");
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param \Illuminate\Http\Request $request requette
+     * @param int                      $id      identifiant du produit
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function restore(Request $request, int $id)
+    {
+        $user = $request->user();
+        if ($this->isAdmin($user)) {
+            Product::withTrashed()->find($id)->restore();
             return redirect()->route('product_index');
         }
         abort(403, "Access denied!");

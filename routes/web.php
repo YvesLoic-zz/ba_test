@@ -94,6 +94,10 @@ Route::middleware(['auth', 'userIs:owner'])->group(
                     '/{id}/show',
                     [ProductController::class, 'show']
                 )->name('product_show');
+                route::get(
+                    '/{id}/restore',
+                    [ProductController::class, 'restore']
+                )->name('product_restore');
                 route::post(
                     'store',
                     [ProductController::class, 'store']
