@@ -19,6 +19,6 @@
 ~~~~
  - infos de connexion
 ~~~~
-    email: loic@gmail.com
+    email: loic@example.org
     password: Yves1234*
 ~~~~
