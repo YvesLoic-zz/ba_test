@@ -28,27 +28,27 @@
             <div class="row">
                 <div class="col-lg-6 col-md-6 label">Etat du compte</div>
                 <div class="col-lg-6 col-md-6">
-                 @if (!empty($user->deleted_at))
-                    <span class="badge bg-danger">Compte Supprimé le {{$user->deleted_at->format('j F, Y H:m')}}</span>
-                 @else
-                    <span class="badge bg-success">Compte Actif</span>
-                 @endif
+                    @if (!empty($user->deleted_at))
+                        <span class="badge bg-danger">Compte Supprimé le
+                            {{ $user->deleted_at->format('j F, Y H:m') }}</span>
+                    @else
+                        <span class="badge bg-success">Compte Actif</span>
+                    @endif
                 </div>
             </div>
-            @if($user->rule == 'admin' && Auth::user()->id !== $user->id)
-            <div class="row">
-                <div class="col-lg-6 col-md-6 label">Supprimer ce compte</div>
-                <div class="col-lg-6 col-md-6">
-                    <form action="{{ route('user_delete', ['id' => $user->id]) }}"
-                        method="DELETE">
-                        @csrf
-                        <button class="btn btn-default float-end" type="submit">
-                            <i class="bi bi-trash-fill" style="color: red;"></i>
-                            <span style="color: red;">Supprimer</span>
-                        </button>
-                    </form>
+            @if (Auth::user()->rule == 'admin' && Auth::user()->id !== $user->id)
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 label">Supprimer ce compte</div>
+                    <div class="col-lg-6 col-md-6">
+                        <form action="{{ route('user_delete', ['id' => $user->id]) }}" method="DELETE">
+                            @csrf
+                            <button class="btn btn-default float-end" type="submit">
+                                <i class="bi bi-trash-fill" style="color: red;"></i>
+                                <span style="color: red;">Supprimer</span>
+                            </button>
+                        </form>
+                    </div>
                 </div>
-            </div>
             @endif
         </div>
     </div>
