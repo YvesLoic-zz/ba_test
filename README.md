@@ -1,6 +1,6 @@
 # ba_test
  Projet de test pour
-# Prcédure de test
+# Procédure de test
  - installer les dépendances
 ~~~~
     composer install
