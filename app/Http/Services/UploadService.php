@@ -21,7 +21,7 @@ trait UploadService
     {
         $file = $req->image;
         $file_name = uniqid(time()) . '.' . $file->extension();
-        $path = public_path() . '/images/products';
+        $path = public_path('/images/products');
         $product->image = '/images/products/' . $file_name;
         $file->move($path, $file_name);
     }

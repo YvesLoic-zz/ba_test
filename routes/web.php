@@ -70,7 +70,7 @@ Route::middleware(['auth', 'userIs:owner'])->group(
                     '/{id}/update',
                     [UserController::class, 'update']
                 )->name('user_update');
-                route::delete(
+                route::get(
                     '/{id}/delete',
                     [UserController::class, 'destroy']
                 )->name('user_delete');

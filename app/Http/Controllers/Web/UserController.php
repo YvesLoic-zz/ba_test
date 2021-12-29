@@ -93,11 +93,8 @@ class UserController extends Controller
             $this->_fillUserRoles($u);
             return redirect()->route('user_index')
                 ->with(
-                    'message',
-                    [
-                        'alert' => 'alert-success',
-                        'content' => 'Utilisateur crée avec succes!'
-                    ]
+                    'success',
+                    'Utilisateur crée avec succes!'
                 );
         }
         abort(403, "Access denied!");
@@ -170,11 +167,8 @@ class UserController extends Controller
             $this->_fillUserRoles($user);
             return redirect()->route('user_index')
                 ->with(
-                    'message',
-                    [
-                        'alert' => 'alert-success',
-                        'content' => 'Utilisateur modifié avec succes!'
-                    ]
+                    'success',
+                    'Utilisateur modifié avec succes!'
                 );
         }
         abort(403, "Access denied!");
@@ -196,11 +190,8 @@ class UserController extends Controller
             $user->delete();
             return redirect()->route('user_index')
                 ->with(
-                    'message',
-                    [
-                        'alert' => 'alert-success',
-                        'content' => 'Utilisateur supprimé avec succes!'
-                    ]
+                    'success',
+                    'Utilisateur supprimé avec succes!'
                 );
         }
         abort(403, "Access denied!");

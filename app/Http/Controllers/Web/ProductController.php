@@ -98,7 +98,11 @@ class ProductController extends Controller
                 $this->uploadProductImage($request, $product);
             }
             $product->save();
-            return redirect()->route('product_index');
+            return redirect()->route('product_index')
+                ->with(
+                    'success',
+                    'Produit enregistré avec succès!'
+                );
         }
         abort(403, "Access denied!");
     }
@@ -171,7 +175,11 @@ class ProductController extends Controller
             }
             $product->updated_at = Date::now();
             $product->update();
-            return redirect()->route('product_index');
+            return redirect()->route('product_index')
+                ->with(
+                    'success',
+                    'Produit modifié avec succès!'
+                );
         }
         abort(403, "Access denied!");
     }
@@ -192,7 +200,11 @@ class ProductController extends Controller
             $product = Product::find($id);
             $product->published = false;
             $product->delete();
-            return redirect()->route('product_index');
+            return redirect()->route('product_index')
+                ->with(
+                    'success',
+                    'Produit supprimé avec succès!'
+                );
         }
         abort(403, "Access denied!");
     }
@@ -210,7 +222,11 @@ class ProductController extends Controller
         $user = $request->user();
         if ($this->isAdmin($user)) {
             Product::withTrashed()->find($id)->restore();
-            return redirect()->route('product_index');
+            return redirect()->route('product_index')
+                ->with(
+                    'success',
+                    'Produit restoré avec succès!'
+                );
         }
         abort(403, "Access denied!");
     }

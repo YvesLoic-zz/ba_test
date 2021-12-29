@@ -18,7 +18,7 @@ class ProductForm extends Form
                         'class' => 'form-control',
                         'placeholder' => 'Nom produit'
                     ],
-                    'rules'=>[
+                    'rules' => [
                         'required',
                     ]
                 ]
@@ -32,7 +32,7 @@ class ProductForm extends Form
                         'class' => 'form-control',
                         'placeholder' => 'Description produit'
                     ],
-                    'rules'=>[
+                    'rules' => [
                         'required',
                     ]
                 ]
@@ -46,7 +46,7 @@ class ProductForm extends Form
                         'class' => 'form-control',
                         'placeholder' => 'Quantité'
                     ],
-                    'rules'=>[
+                    'rules' => [
                         'required',
                         'numeric',
                     ]
@@ -61,7 +61,7 @@ class ProductForm extends Form
                         'class' => 'form-control',
                         'placeholder' => 'Prix produit'
                     ],
-                    'rules'=>[
+                    'rules' => [
                         'required',
                         'numeric',
                     ]
@@ -74,7 +74,11 @@ class ProductForm extends Form
                     'label' => 'Image du produit',
                     'attr' => [
                         'class' => 'form-control',
-                        'accept' => "image/jpg, image/jpeg, image/png",
+                        // 'accept' => "image/jpg, image/jpeg, image/png",
+                    ],
+                    'rules' => [
+                        'mimes:jpg,jpeg,png',
+                        'max:2048'
                     ]
                 ]
             )
