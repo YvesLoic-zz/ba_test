@@ -415,9 +415,10 @@
                     <a href="{{ url('/home') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Home</a>
                 @else
                     <a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Log in</a>
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}" class="ml-4 text-sm text-gray-700 dark:text-gray-500 underline">Register</a>
-                        @endif
+                    @if (Route::has('register'))
+                        <a href="{{ route('register') }}"
+                            class="ml-4 text-sm text-gray-700 dark:text-gray-500 underline">Register</a>
+                    @endif
                 @endauth
             </div>
         @endif
@@ -426,27 +427,24 @@
             <main class="py-4">
                 <div class="container">
                     <div class="row justify-content-center">
-                        <div class="col-md-12">
-                            <div class="row col-md-4">
-                                @if (count($products) > 0)
-                                    @foreach ($products as $product)
-                                        <div class="card" style="width: 18rem;">
-                                            <img class="card-img-top" src="{{ asset($product->image) }}"
-                                                style="width: 200px; height: 150px" alt="{{ $product->name }}">
-                                            <div class="card-body">
-                                                <h5 class="card-title">{{ $product->name }}</h5>
-                                                <p class="card-text">{{ $product->description }}</p>
-                                                {{-- <p class="card-text">Crée par: {{ $product->creator->name }}</p> --}}
-                                                {{-- <a href="{{ route('detail', ['id' => $product->id]) }}"
+                        @if (count($products) > 0)
+                            @foreach ($products as $product)
+                                <div class="card col-sm-3" style="width: 18rem;">
+                                    <img class="card-img-top" src="{{ asset($product->image) }}"
+                                        style="width: 200px; height: 150px" alt="{{ $product->name }}">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ $product->name }}</h5>
+                                        <p class="card-text">Quantité: {{ $product->quantity }}</p>
+                                        <p class="card-text">Prix unitaire: {{ $product->price }}</p>
+                                        <p class="card-text">{{ $product->description }}</p>
+                                        {{-- <a href="{{ route('detail', ['id' => $product->id]) }}"
                                                     class="btn btn-primary">Détails</a> --}}
-                                            </div>
-                                        </div>
-                                    @endforeach
-                                @else
-                                    <h5 align="center"> No data found...</h5>
-                                @endif
-                            </div>
-                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        @else
+                            <h5 align="center"> No data found...</h5>
+                        @endif
                     </div>
             </main>
         </div>
