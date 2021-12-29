@@ -17,6 +17,9 @@ class ProductForm extends Form
                     'attr' => [
                         'class' => 'form-control',
                         'placeholder' => 'Nom produit'
+                    ],
+                    'rules'=>[
+                        'required',
                     ]
                 ]
             )
@@ -28,6 +31,9 @@ class ProductForm extends Form
                     'attr' => [
                         'class' => 'form-control',
                         'placeholder' => 'Description produit'
+                    ],
+                    'rules'=>[
+                        'required',
                     ]
                 ]
             )
