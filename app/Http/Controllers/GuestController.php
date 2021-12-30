@@ -17,8 +17,9 @@ class GuestController extends Controller
      */
     public function index(Request $request)
     {
-        $products = Product::where('published', 1)->get();
-        return view('welcome', compact('products'));
+        // $products = Product::where('published', 1)->get();
+        // return view('welcome', compact('products'));
+        return redirect()->route('home');
     }
 
     /**
