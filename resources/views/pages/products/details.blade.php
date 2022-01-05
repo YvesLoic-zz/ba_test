@@ -28,14 +28,14 @@
                 <div class="row">
                     <div class="col-lg-6 col-md-6 label">Créer le</div>
                     <div class="col-lg-6 col-md-6">
-                        {{ $product->created_at->format('j F, Y H:m') }} par: {{ $autor->name }}
+                        {{ $product->created_at->format('j F, Y H:i') }} par: {{ $autor->name }}
                     </div>
                 </div>
             @elseif (Auth::user()->rule == 'owner' && Auth::user()->id == $product->user_id)
                 <div class="row">
                     <div class="col-lg-6 col-md-6 label">Crée par moi le</div>
                     <div class="col-lg-6 col-md-6">
-                        {{ $product->created_at->format('j F, Y H:m') }} .
+                        {{ $product->created_at->format('j F, Y H:i') }} .
                     </div>
                 </div>
             @endif
@@ -66,7 +66,7 @@
                 <div class="col-lg-6 col-md-6">
                     @if (!empty($product->deleted_at))
                         <span class="badge bg-danger">Produit Supprimé le
-                            {{ $product->deleted_at->format('j F, Y H:m') }}</span>
+                            {{ $product->deleted_at->format('j F, Y H:i') }}</span>
                     @else
                         <span class="badge bg-success">Produit Actif</span>
                     @endif

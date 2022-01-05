@@ -30,7 +30,7 @@
                 <div class="col-lg-6 col-md-6">
                     @if (!empty($user->deleted_at))
                         <span class="badge bg-danger">Compte Supprimé le
-                            {{ $user->deleted_at->format('j F, Y H:m') }}</span>
+                            {{ $user->deleted_at->format('j F, Y H:i') }}</span>
                     @else
                         <span class="badge bg-success">Compte Actif</span>
                     @endif

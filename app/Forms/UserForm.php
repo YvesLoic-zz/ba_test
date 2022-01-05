@@ -7,6 +7,8 @@ use Kris\LaravelFormBuilder\Form;
 
 class UserForm extends Form
 {
+    protected $clientValidationEnabled = false;
+
     /**
      * Formulaire de gestion des utilisateurs
      *
@@ -21,13 +23,11 @@ class UserForm extends Form
                 'label' => "Nom d'utilisateur",
                 'attr' => [
                     'class' => 'form-control',
-                    'required' => true,
                     'placeholder' => "Entrez le nom de l'utilisateur ici"
                 ],
                 'rules' => [
                     'required',
                     'string',
-                    'alpha',
                 ]
             ]
         )->add(
@@ -37,7 +37,6 @@ class UserForm extends Form
                 'label' => "Adresse E-mail de l'utilisateur",
                 'attr' => [
                     'class' => 'form-control',
-                    'required' => true,
                     'placeholder' => "Entrez l'adresse E-mail de l'utilisateur ici",
                 ],
                 'rules' => [
@@ -53,7 +52,6 @@ class UserForm extends Form
                 'label' => "Mot de passe de l'utilisateur",
                 'attr' => [
                     'class' => 'form-control',
-                    'required' => true,
                     'placeholder' => "Entrez le mot de passe de l'utilisateur ici"
                 ],
                 'rules' => [

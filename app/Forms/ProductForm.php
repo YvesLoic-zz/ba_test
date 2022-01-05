@@ -6,6 +6,13 @@ use Kris\LaravelFormBuilder\Form;
 
 class ProductForm extends Form
 {
+    protected $clientValidationEnabled = false;
+
+    /**
+     * Formulaire de gestion des produits
+     *
+     * @return \Kris\LaravelFormBuilder\Form
+     */
     public function buildForm()
     {
         $this
