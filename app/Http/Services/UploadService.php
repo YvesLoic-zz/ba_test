@@ -3,9 +3,7 @@
 namespace App\Http\Services;
 
 use App\Models\Product;
-use App\Models\User;
 use Illuminate\Http\Request;
-use Symfony\Component\String\Slugger\SluggerInterface;
 
 trait UploadService
 {
