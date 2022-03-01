@@ -23,9 +23,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::prefix('auth')->group(function () {
     Route::post('login', [AuthController::class, 'login']);
     Route::post('logout', [AuthController::class, 'logout'])->middleware('jwt');
-    Route::post('refresh', [AuthController::class, 'refresh'])->middleware('jwt');
+    Route::post('refresh', [AuthController::class, 'refresh']);
 });
 
-Route::group(['middleware' => 'jwt'], function () {
-    Route::apiResource("user", UserController::class);
+Route::group(['middleware' => 'jwt', 'prefix' => 'user'], function () {
+    Route::get("", [UserController::class, 'index']);
+    Route::get("single/{id}", [UserController::class, 'show']);
+    route::post("create", [UserController::class, "store"]);
+    Route::put("update/{id}", [UserController::class, 'update']);
+    Route::delete("delete/{id}", [UserController::class, 'destroy']);
+    Route::post("restore/{id}", [UserController::class, "restore"]);
 });

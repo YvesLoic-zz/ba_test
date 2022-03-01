@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Library\UserLibrary;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -24,8 +25,9 @@ class UserController extends Controller
     {
         $user = $request->user();
         if ($this->isAdmin($user)) {
-            $users = User::withTrashed()->forPage($request->page, 10)->get();
-            $this->success($users, "10 users from page " . $request->page);
+            $users = User::withTrashed()->forPage($request->page, 1)->get();
+            $users = UserResource::collection($users);
+            return $this->success($users, sizeof($users) . " users from page " . $request->page);
         }
         return $this->error(403, "Access denied!", "getUserList from method 'index'");
     }
@@ -42,17 +44,22 @@ class UserController extends Controller
         if ($this->isAdmin($user)) {
             $validator = Validator::make(
                 $request->all(),
-                $this->userValidatedRules(),
-                $this->userMessagesError()
+                $this->userValidatedRules(true),
+                $this->userMessagesError(false)
             );
-            if ($validator->validate()) {
+            if (!$validator->fails()) {
                 $res = User::create([
                     'name' => $request->input('name'),
                     'email' => $request->input('email'),
                     'rule' => $request->input('rule'),
                     'password' => Hash::make($request->input('password'))
                 ]);
-                return $this->success($res, 'User Created With Secretary Privilege');
+                if (strcmp($res->rule, "admin") == 0) {
+                    $res->rules()->attach([1, 2]);
+                } else {
+                    $res->rules()->attach(2);
+                }
+                return $this->success(new UserResource($res), 'User Created With Secretary Privilege');
             }
             return $this->error(400, $validator->errors(), "Create user from method 'store");
         }
@@ -70,9 +77,9 @@ class UserController extends Controller
         $user = $request->user();
         // return  $this->success($id, "Before the process!");
         if ($this->isAdmin($user)) {
-            $res = User::withTrashed()->with('rules')->findOrFail($id);
+            $res = User::withTrashed()->with('rules')->find($id);
             if (!empty($res)) {
-                return $this->success($res, "User found!");
+                return $this->success(new UserResource($res), "User found!");
             }
             return $this->error(404, "User not found!", "Get single user from method 'show'");
         }
@@ -92,20 +99,26 @@ class UserController extends Controller
         if ($this->isAdmin($user)) {
             $validator = Validator::make(
                 $request->all(),
-                $this->userValidatedRules(),
+                $this->userValidatedRules(false),
                 $this->userMessagesError()
             );
-            if ($validator->validate()) {
+            if (!$validator->fails()) {
                 $updatedUser = User::find($id);
                 if (empty($updatedUser)) {
                     return $this->error(404, "User not found!", "Update user from method 'update'");
                 }
-                $updatedUser->username = $request->input('name');
+                $updatedUser->name = $request->input('name');
                 $updatedUser->email = $request->input('email');
                 $updatedUser->password = Hash::make($request->input('password'));
                 $updatedUser->rule = $request->input('rule');
-                $updatedUser->save();
-                return $this->success($updatedUser, 'User Updated');
+                $updatedUser->update();
+                $updatedUser->rules()->detach();
+                if (strcmp($updatedUser->rule, "admin") == 0) {
+                    $updatedUser->rules()->attach([1, 2]);
+                } else {
+                    $updatedUser->rules()->attach(2);
+                }
+                return $this->success(new UserResource($updatedUser), 'User Updated');
             }
             return $this->error(400, $validator->errors(), "Update user from method 'update");
         }
@@ -126,10 +139,31 @@ class UserController extends Controller
             $res = User::find($id);
             if (!empty($res)) {
                 $res->delete();
-                $this->success($res, "User deleted!");
+                return $this->success(new UserResource($res), "User deleted!");
             }
-            return $this->error(404, "User not founf!", "Delete user from method 'destroy'");
+            return $this->error(404, "User not found!", "Delete user from method 'destroy'");
         }
         return $this->error(403, "Access denied!", "Delete user from method 'destroy'");
+    }
+
+    /**
+     * Restore the specified resource from storage.
+     *
+     * @param  Request $request
+     * @param  int     $id
+     * @return \Illuminate\Http\Response
+     */
+    public function restore(Request $request, int $id)
+    {
+        $user = $request->user();
+        if ($this->isAdmin($user)) {
+            $res = User::withTrashed()->find($id);
+            if (!empty($res)) {
+                $res->restore();
+                return $this->success(new UserResource($res), "User restored!");
+            }
+            return $this->error(404, "User not found!", "Restore user from method 'restore'");
+        }
+        return $this->error(403, "Access denied!", "Restore user from method 'restore'");
     }
 }

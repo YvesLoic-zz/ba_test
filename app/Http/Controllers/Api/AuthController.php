@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Library\Library;
+use App\Http\Resources\UserResource;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
@@ -29,11 +31,11 @@ class AuthController extends Controller
             }
             $res = [
                 'token' => 'Bearer ' . $token,
-                'user' => auth()->user(),
+                'user' => new UserResource(Auth::user()),
             ];
             $res = $this->respondWithJSON(200, $res, null, null);
         } catch (Exception $e) {
-            $res = $this->respondWithJSON(401, null, 'Invalid credentials', $e->getMessage());
+            $res = $this->respondWithJSON(200, null, 'Invalid credentials', $e->getMessage());
         }
         return $res;
     }
@@ -45,10 +47,10 @@ class AuthController extends Controller
      */
     public function logout(Request $request)
     {
-        $user = $request->user();
+        $user = Auth::user();
         if (Auth::check()) {
             if ($this->isRecognized($user)) {
-                auth()->logout();
+                Auth::logout();
                 return $this->respondWithJSON(200, null, 'Successfully logged out', null);
             }
             return $this->respondWithJSON(403, null, 'User not found', 'Unrecognized by the system');
@@ -63,14 +65,16 @@ class AuthController extends Controller
      */
     public function refresh(Request $request)
     {
-        $user = $request->user();
-        if (Auth::check()) {
-            if ($this->isRecognized($user)) {
-                return $this->respondWithJSON(200, auth()->refresh(), null, null);
-            }
-            return $this->respondWithJSON(403, null, 'User not found', 'Unrecognized by the system');
+        try {
+            $refreshed = JWTAuth::refresh(JWTAuth::getToken());
+            $user = JWTAuth::setToken($refreshed)->toUser();
+            $request->header('Authorization', 'Bearer ' . $refreshed);
+            return response()
+                ->json(["status" => 200, "message" => "Token refreshed!", "user" => new UserResource($user)])
+                ->header("Authorization", "Bearer " . $refreshed);
+        } catch (JWTException $e) {
+            return $this->respondWithJSON(103, null, "Token cannot be refreshed!", $e->getMessage());
         }
-        return $this->respondWithJSON(500, null, 'User not authenticated', 'Unrecognized by the system');
     }
 
     /**

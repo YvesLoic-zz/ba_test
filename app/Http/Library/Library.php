@@ -43,8 +43,18 @@ trait Library
      */
     protected function isRecognized($user)
     {
-        if (!empty($user) && (strcmp($user->rule, "admin") || strcmp($user->rule, "owner"))) {
-            return true;
+        if (!empty($user)) {
+            switch ($user->rule) {
+                case 'admin':
+                    return true;
+                    break;
+                case 'owner':
+                    return true;
+                    break;
+                default:
+                    return false;
+                    break;
+            }
         }
         return false;
     }
@@ -72,17 +82,17 @@ trait Library
     /**
      * Méthode d'affichage des erreurs.
      *
-     * @param int    $code    code de l'erreur
-     * @param string $message description
+     * @param int    $code  code de l'erreur
+     * @param string $error description
      *
      * @return JsonResponse
      */
-    protected static function error($code, $message = '', $action)
+    protected static function error($code, $error, $action)
     {
         return response()->json(
             [
                 'status' => $code,
-                'message' => $message,
+                'error' => $error,
                 'action' => $action
             ]
         );
