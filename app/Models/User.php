@@ -55,6 +55,16 @@ class User extends Authenticatable implements JWTSubject
     }
 
     /**
+     * Get all product associated to this user
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
+
+    /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *
      * @return mixed

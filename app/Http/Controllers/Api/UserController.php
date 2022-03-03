@@ -59,7 +59,7 @@ class UserController extends Controller
                 } else {
                     $res->rules()->attach(2);
                 }
-                return $this->success(new UserResource($res), 'User Created With Secretary Privilege');
+                return $this->success(new UserResource($res), 'User Created With ' . $res->rule . ' Privilege');
             }
             return $this->error(400, $validator->errors(), "Create user from method 'store");
         }
@@ -75,9 +75,8 @@ class UserController extends Controller
     public function show(Request $request, int $id)
     {
         $user = $request->user();
-        // return  $this->success($id, "Before the process!");
         if ($this->isAdmin($user)) {
-            $res = User::withTrashed()->with('rules')->find($id);
+            $res = User::withTrashed()->with(['rules', 'products'])->find($id);
             if (!empty($res)) {
                 return $this->success(new UserResource($res), "User found!");
             }

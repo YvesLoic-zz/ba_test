@@ -19,17 +19,37 @@ class UserResource extends JsonResource
             "name" => $this->name,
             "rule" => $this->rule,
             "rules" => $this->getRoles($this),
+            "products" => $this->getProducts($this),
             "created_at" => $this->created_at,
             "deleted_at" => $this->deleted_at,
         ];
         // return parent::toArray($request);
     }
 
-    public function getRoles($user)
+    private function getRoles($user)
     {
         $r = [];
         foreach ($user->rules as $rule) {
             array_push($r, $rule->name);
+        }
+        return $r;
+    }
+
+    private function getProducts($user)
+    {
+        $r = [];
+        foreach ($user->products as $product) {
+            array_push(
+                $r,
+                [
+                    'id' => $product->id,
+                    'name' => $product->name,
+                    'description' => $product->description,
+                    'quantity' => $product->quantity,
+                    'price' => $product->price,
+                    'created_at' => $product->created_at,
+                ]
+            );
         }
         return $r;
     }
