@@ -8,6 +8,7 @@ use App\Http\Resources\ProductResource;
 use App\Http\Services\UploadService;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
@@ -106,6 +107,7 @@ class ProductController extends Controller
                 }
                 $product = $this->_fillProductData($request, $product);
                 if (!empty($request->file('image'))) {
+                    empty($product->image) ?: File::delete(public_path($product->image));
                     $this->uploadProductImage($request, $product);
                 }
                 $product->update();

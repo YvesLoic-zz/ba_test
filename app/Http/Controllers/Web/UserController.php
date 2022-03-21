@@ -228,6 +228,7 @@ class UserController extends Controller
         $u = $user ?: new User();
         $u->name = $req->name;
         $u->email = $req->email;
+        $u->phone = $req->phone;
         $u->rule = $req->rule;
         if (!empty($req->password)) {
             $u->password = Hash::make($req->password);

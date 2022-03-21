@@ -15,6 +15,7 @@ trait UserLibrary
         return [
             'name' => ['required', 'string', 'max:50'],
             'email' => ['required', 'string', 'email', 'max:255', $store ? 'unique:users' : null],
+            'phone' => ['required', 'numeric', 'min:9', 'max:15', $store ? 'unique:users' : null],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'rule' => ['required', 'string'],
         ];
@@ -36,6 +37,12 @@ trait UserLibrary
             "email.email" => "Format de l'E-mail non valide!",
             "email.max" => "L'E-mail doit avoir une longueur max de {limit} charactères!",
             "email.unique" => "Cet E-mail est deja prise, veuillez la remplacer!",
+
+            'phone.required' => "Numéro de téléphone requis.",
+            'phone.numeric' => "Le numéro de téléphone doit etre une suite de chiffres.",
+            'phone.min' => "Le numéro de téléphone doit avoir au moins 9 chiffres.",
+            'phone.max' => "Le numéro de téléphone doit avoir au plus 15 chiffres.",
+            'phone.unique' => "Un utilisateur possède deja cet numéro de télé^hone, veuillez le changer.",
 
             "password.required" => "Le mot de passe de l'utilisateur doit etre fourni!",
             "password.string" => "Le mot de passe de l'utilisateur doit une chaine de charactères!",

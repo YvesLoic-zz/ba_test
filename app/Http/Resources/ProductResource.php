@@ -20,11 +20,13 @@ class ProductResource extends JsonResource
             'description' => $this->description,
             'quantity' => $this->quantity,
             'price' => $this->price,
+            'image' => $request->getSchemeAndHttpHost() . '' . $this->image,
             'published' => $this->published,
             'autor' => [
                 'id' => $this->creator->id,
                 'name' => $this->creator->name,
                 'email' => $this->creator->email,
+                'phone' => $this->creator->phone,
             ],
             'created_at' => $this->created_at,
             'deleted_at' => $this->deleted_at,

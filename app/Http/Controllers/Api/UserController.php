@@ -51,6 +51,7 @@ class UserController extends Controller
                 $res = User::create([
                     'name' => $request->input('name'),
                     'email' => $request->input('email'),
+                    'phone' => $request->input('phone'),
                     'rule' => $request->input('rule'),
                     'password' => Hash::make($request->input('password'))
                 ]);
@@ -108,6 +109,7 @@ class UserController extends Controller
                 }
                 $updatedUser->name = $request->input('name');
                 $updatedUser->email = $request->input('email');
+                $updatedUser->phone = $request->input('phone');
                 $updatedUser->password = Hash::make($request->input('password'));
                 $updatedUser->rule = $request->input('rule');
                 $updatedUser->update();

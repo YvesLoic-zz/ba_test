@@ -17,6 +17,7 @@ class UserFactory extends Factory
         return [
             'name' => 'Yves Loic',
             'email' => 'loic@example.org',
+            'phone' => '698586208',
             'email_verified_at' => now(),
             'password' => '$2y$10$OSIZCCQC3cE8N2T9Rkl5c.ZFIRCFa/Rr3c7atX4YNtxH6JjS6rKHe', // Yves1234*
             'remember_token' => Str::random(10),
