@@ -4,6 +4,8 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
+use function PHPUnit\Framework\isEmpty;
+
 class ProductResource extends JsonResource
 {
     /**
@@ -20,13 +22,14 @@ class ProductResource extends JsonResource
             'description' => $this->description,
             'quantity' => $this->quantity,
             'price' => $this->price,
-            'image' => $request->getSchemeAndHttpHost() . '' . $this->image,
+            'image' => $this->image == null ? null : $request->getSchemeAndHttpHost() . '' . $this->image,
             'published' => $this->published,
             'autor' => [
                 'id' => $this->creator->id,
                 'name' => $this->creator->name,
                 'email' => $this->creator->email,
                 'phone' => $this->creator->phone,
+                'rule' => $this->creator->rule,
             ],
             'created_at' => $this->created_at,
             'deleted_at' => $this->deleted_at,

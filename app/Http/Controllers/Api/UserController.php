@@ -25,7 +25,7 @@ class UserController extends Controller
     {
         $user = $request->user();
         if ($this->isAdmin($user)) {
-            $users = User::withTrashed()->forPage($request->page, 1)->get();
+            $users = User::withTrashed()->forPage($request->page, 5)->get();
             $users = UserResource::collection($users);
             return $this->success($users, sizeof($users) . " users from page " . $request->page);
         }
