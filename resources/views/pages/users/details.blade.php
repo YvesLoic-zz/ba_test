@@ -22,6 +22,10 @@
                 <div class="col-lg-6 col-md-6">{{ $user->email }}</div>
             </div>
             <div class="row">
+                <div class="col-lg-6 col-md-6 label">Phone</div>
+                <div class="col-lg-6 col-md-6">{{ $user->phone }}</div>
+            </div>
+            <div class="row">
                 <div class="col-lg-6 col-md-6 label">Role</div>
                 <div class="col-lg-6 col-md-6">{{ $user->rule }}</div>
             </div>
